@@ -1,49 +1,46 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export default function CityMap() {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    async function initMap() {
-      const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-        version: "weekly",
-        libraries: ["places"],
-      });
+    if (!mapRef.current) return;
 
-      await loader.load();
+    const map = new maplibregl.Map({
+      container: mapRef.current,
+      style: "https://tiles.openfreemap.org/styles/liberty",
 
-      if (!mapRef.current) return;
+      center: [32.5825, 0.3476],
 
-      const map = new google.maps.Map(mapRef.current, {
-        center: { lat: 0.3476, lng: 32.5825 },
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        disableDefaultUI: false,
-        zoomControl: true,
-        streetViewControl: true,
-        mapTypeControl: true,
-        fullscreenControl: true,
-      });
+      zoom: 15,
+      pitch: 45,
+      bearing: -17,
+      antialias: true,
+    } as maplibregl.MapOptions);
 
-      new google.maps.Marker({
-        position: { lat: 0.3476, lng: 32.5825 },
-        map,
-        title: "DreamTeQ Urbaniz",
-      });
-    }
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-    initMap().catch(console.error);
+    new maplibregl.Marker()
+      .setLngLat([32.5825, 0.3476])
+      .setPopup(
+        new maplibregl.Popup().setHTML(
+          "<h3>DreamTeQ Urbaniz</h3><p>Smart City Platform</p>"
+        )
+      )
+      .addTo(map);
+
+    return () => map.remove();
   }, []);
 
   return (
     <div
       ref={mapRef}
       style={{
-        width: "100vw",
+        width: "100%",
         height: "100vh",
       }}
     />
