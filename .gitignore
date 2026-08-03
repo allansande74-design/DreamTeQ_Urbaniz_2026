@@ -36,3 +36,12 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+vault/
+vault/
+diagnostics/
+diagnostics.zip
+.env
+.env.*
+vault/
+*.key
+*.secret

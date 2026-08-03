@@ -11,15 +11,26 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^2.1.1",
+    "@openrouter/ai-sdk-provider": "^3.0.0",
     "@repo/ui": "workspace:*",
     "@turf/turf": "^7.3.5",
+    "ai": "^7.0.38",
+    "axios": "^1.18.1",
+    "framer-motion": "^12.42.2",
+    "lucide-react": "^1.27.0",
     "maplibre-gl": "5.9.0",
     "next": "16.2.0",
+    "openai": "^6.49.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.7.0",
+    "react-map-gl": "^8.1.1",
+    "react-markdown": "^10.1.0",
+    "react-speech-recognition": "^4.0.1",
+    "remark-gfm": "^4.0.1",
     "supercluster": "^8.0.1",
+    "uuid": "^14.0.1",
+    "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
