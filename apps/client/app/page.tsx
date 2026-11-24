@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 type Spot = { id: string; name: string; address: string; latitude: number; longitude: number; hourlyRate: number; available: number; capacity: number; type: string; features: string[]; updatedAt: string };
@@ -80,7 +81,7 @@ export default function Home() {
 
   const statusLabel = state === "live" ? "Operator availability" : state === "demo" ? "Demo inventory" : state === "offline" ? "Offline · last saved data" : state === "loading" ? "Loading parking" : "Inventory not configured";
   return <main className="urbaniz">
-    <header className="site-header"><a className="brand" href="/" aria-label="Urbaniz home"><span className="brand-icon">U</span>urbaniz<span className="brand-period">.</span></a><nav aria-label="Main navigation"><a className="nav-current" href="#parking">Find parking</a><a href="#about">How it works</a></nav><div className="header-right"><span className={`service-status ${state === "live" && online ? "status-live" : ""}`}><i />{online ? statusLabel : "Offline"}</span><a className="sign-in-link" href="/signin">Sign in</a></div></header>
+    <header className="site-header"><Link className="brand" href="/" aria-label="Urbaniz home"><span className="brand-icon">U</span>urbaniz<span className="brand-period">.</span></Link><nav aria-label="Main navigation"><a className="nav-current" href="#parking">Find parking</a><a href="#about">How it works</a></nav><div className="header-right"><span className={`service-status ${state === "live" && online ? "status-live" : ""}`}><i />{online ? statusLabel : "Offline"}</span><a className="sign-in-link" href="/signin">Sign in</a></div></header>
     <section className="welcome"><div><p className="kicker">PARKING, WITHOUT THE GUESSWORK</p><h1>A better spot is <span>around the corner.</span></h1><p className="welcome-copy">Explore nearby parking, compare prices, and book with confidence.</p></div><div className="network-note"><strong>{state === "live" ? "Connected to parking operators" : state === "demo" ? "Preview environment" : state === "offline" ? "Showing cached availability" : "Availability source"}</strong><span>{state === "live" ? "Inventory timestamps are shown for each location." : state === "demo" ? "Sample listings are illustrative, not bookable." : "Live inventory appears when a parking provider is connected."}</span></div></section>
     <section className="discovery" id="parking">
       <div className="results-column"><div className="search-control"><span aria-hidden="true">⌕</span><input aria-label="Search parking locations" placeholder="Search a street or neighborhood" value={query} onChange={(event) => setQuery(event.target.value)} /><button aria-label="Search" onClick={() => document.querySelector<HTMLInputElement>(".search-control input")?.focus()}>Search</button></div>
