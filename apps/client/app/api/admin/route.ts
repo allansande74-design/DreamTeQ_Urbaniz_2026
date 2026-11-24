@@ -67,14 +67,15 @@ export async function POST(request: NextRequest) {
     body = parsed as SpotInput;
   } catch { return NextResponse.json({ error: "Provide a valid JSON request body." }, { status: 400 }); }
   if (!isValidSpot(body)) return NextResponse.json({ error: "Check the location fields, coordinates, rate, capacity, and parking type." }, { status: 400 });
-  const record = { ...(typeof body.id === "string" ? { id: body.id } : {}), name: (body.name as string).trim(), address: (body.address as string).trim(), latitude: body.latitude, longitude: body.longitude, hourly_rate: body.hourlyRate, capacity: body.capacity, type: body.type, features: body.features ?? [], is_active: body.isActive ?? true, updated_at: new Date().toISOString() };
+  const spotId = typeof body.id === "string" ? body.id : undefined;
+  const record = { ...(spotId ? { id: spotId } : {}), name: (body.name as string).trim(), address: (body.address as string).trim(), latitude: body.latitude, longitude: body.longitude, hourly_rate: body.hourlyRate, capacity: body.capacity, type: body.type, features: body.features ?? [], is_active: body.isActive ?? true, updated_at: new Date().toISOString() };
   try {
-    const endpoint = `${auth.url}/rest/v1/parking_spots${body.id ? `?id=eq.${encodeURIComponent(body.id)}` : ""}`;
-    const response = await fetch(endpoint, { method: body.id ? "PATCH" : "POST", headers: { apikey: auth.serviceKey, Authorization: `Bearer ${auth.serviceKey}`, "Content-Type": "application/json", Prefer: "return=representation" }, body: JSON.stringify(record), cache: "no-store", signal: AbortSignal.timeout(7000) });
+    const endpoint = `${auth.url}/rest/v1/parking_spots${spotId ? `?id=eq.${encodeURIComponent(spotId)}` : ""}`;
+    const response = await fetch(endpoint, { method: spotId ? "PATCH" : "POST", headers: { apikey: auth.serviceKey, Authorization: `Bearer ${auth.serviceKey}`, "Content-Type": "application/json", Prefer: "return=representation" }, body: JSON.stringify(record), cache: "no-store", signal: AbortSignal.timeout(7000) });
     if (!response.ok) return NextResponse.json({ error: "Could not save this location. Check the database configuration." }, { status: 502 });
     const rows = await response.json() as unknown[];
-    if (body.id && rows.length === 0) return NextResponse.json({ error: "Parking location not found." }, { status: 404 });
-    return NextResponse.json({ ok: true }, { status: body.id ? 200 : 201, headers: { "Cache-Control": "no-store" } });
+    if (spotId && rows.length === 0) return NextResponse.json({ error: "Parking location not found." }, { status: 404 });
+    return NextResponse.json({ ok: true }, { status: spotId ? 200 : 201, headers: { "Cache-Control": "no-store" } });
   } catch {
     return NextResponse.json({ error: "Inventory service is temporarily unavailable." }, { status: 503 });
   }
