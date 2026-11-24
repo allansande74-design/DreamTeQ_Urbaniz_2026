@@ -9,7 +9,7 @@ pnpm install
 pnpm --filter web dev
 ```
 
-Open http://localhost:3000. Without Supabase variables, development uses clearly labelled, illustrative sample inventory; reservations are disabled. The demo entries are not verified parking supply or bookable offers. Production refuses to return demo inventory.
+Open http://localhost:3000. Without Supabase credentials the app now shows an inventory setup state instead of invented listings. If you explicitly want illustrative UI data for local design work, set `URBANIZ_DEMO_MODE=true` in `apps/client/.env.local` and restart the dev server. Demo mode is disabled in production and demo listings cannot be reserved. The sample entries are not verified parking supply or bookable offers.
 
 ## Production setup (required)
 

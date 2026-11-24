@@ -11,8 +11,11 @@ export async function GET() {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
-    if (process.env.NODE_ENV === "production") return NextResponse.json({ error: "Parking inventory is not configured." }, { status: 503, headers: { "Cache-Control": "no-store" } });
-    return NextResponse.json({ spots: samples, source: "demo", updatedAt: new Date().toISOString() }, { headers: { "Cache-Control": "no-store" } });
+    // Demo listings are opt-in for local UI work and are never served in production.
+    if (process.env.NODE_ENV !== "production" && process.env.URBANIZ_DEMO_MODE === "true") {
+      return NextResponse.json({ spots: samples, source: "demo", updatedAt: new Date().toISOString() }, { headers: { "Cache-Control": "no-store" } });
+    }
+    return NextResponse.json({ error: "Parking inventory is not configured.", code: "INVENTORY_NOT_CONFIGURED" }, { status: 503, headers: { "Cache-Control": "no-store" } });
   }
   try {
     const response = await fetch(`${url}/rest/v1/parking_spot_availability?select=id,name,address,latitude,longitude,hourly_rate,available,capacity,type,features,updated_at&is_active=eq.true&order=name.asc`, { headers: { apikey: key, Authorization: `Bearer ${key}` }, cache: "no-store", signal: AbortSignal.timeout(6000) });
