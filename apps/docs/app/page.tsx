@@ -1,102 +1,73 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+import Link from "next/link";
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+const nav = [
+  ["Parking", "/#parking"],
+  ["For hosts", "/#hosts"],
+  ["For business", "/#business"],
+  ["Media", "/media"],
+  ["Shop", "/shop"],
+  ["Contact", "/contact"],
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/docs/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main>
+      <header className="nav-shell">
+        <Link className="brand" href="/" aria-label="Urbaniz home"><span>U</span> urbaniz.</Link>
+        <nav aria-label="Primary navigation">
+          {nav.map(([label, href]) => <Link key={label} href={href}>{label}</Link>)}
+        </nav>
+        <a className="nav-action" href="http://localhost:3000">Find parking <span>↗</span></a>
+      </header>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+      <section className="hero" id="parking">
+        <div className="hero-copy">
+          <p className="eyebrow">NAIROBI PARKING NETWORK</p>
+          <h1>Find the right spot.<br/><em>Arrive with confidence.</em></h1>
+          <p className="hero-lede">Search, compare and reserve verified parking across the city—hourly, daily, monthly and for special events.</p>
+          <div className="hero-actions"><a className="primary" href="http://localhost:3000">Find parking</a><a className="secondary" href="#hosts">List your space</a></div>
+          <div className="trust-row"><span><b>Verified</b> locations</span><span><b>Clear</b> pricing</span><span><b>Human</b> support</span></div>
         </div>
-        <Button appName="docs" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
+        <div className="map-card" aria-label="Illustrative parking map">
+          <div className="map-grid" />
+          <div className="route route-one" /><div className="route route-two" />
+          <span className="pin pin-a">P</span><span className="pin pin-b">P</span><span className="pin pin-c">P</span>
+          <div className="map-panel"><small>NEARBY</small><strong>Westlands</strong><p>Verified parking</p></div>
+        </div>
+      </section>
+
+      <section className="proof-strip" aria-label="Platform principles">
+        <div><strong>Book</strong><span>Choose by destination and time</span></div>
+        <div><strong>Navigate</strong><span>Find the correct entrance</span></div>
+        <div><strong>Park</strong><span>Check in with clear access details</span></div>
+        <div><strong>Manage</strong><span>Handle bookings and support</span></div>
+      </section>
+
+      <section className="section" id="hosts">
+        <div className="section-heading"><p class="eyebrow">FOR SPACE OWNERS</p><h2>Put unused parking to work.</h2></div>
+        <div className="host-grid">
+          <article><span>01</span><h3>Add your space</h3><p>Tell us where it is, what vehicles fit and how drivers should arrive.</p></article>
+          <article><span>02</span><h3>Set your terms</h3><p>Choose availability, access rules and pricing through a transparent agreement.</p></article>
+          <article><span>03</span><h3>Go live</h3><p>After verification and human approval, your space can receive bookings.</p></article>
+        </div>
+        <a className="text-link" href="/contact">Start onboarding →</a>
+      </section>
+
+      <section className="section business" id="business">
+        <div className="business-copy"><p className="eyebrow">URBANIZ FOR BUSINESS</p><h2>One network for complex parking operations.</h2><p>Designed for landlords, garages, malls, transport hubs, hotels, event venues, local authorities and fleet operators.</p><a className="primary light" href="/contact">Talk to our team</a></div>
+        <div className="feature-list">
+          <article><b>01</b><div><h3>Multi-location operations</h3><p>Inventory, bookings and partner status in one workspace.</p></div></article>
+          <article><b>02</b><div><h3>Operational reporting</h3><p>Measure occupancy, demand, revenue and exceptions.</p></div></article>
+          <article><b>03</b><div><h3>Connected infrastructure</h3><p>Prepare for sensors, entry systems and access-controlled sites.</p></div></article>
+        </div>
+      </section>
+
+      <footer>
+        <div><Link className="brand footer-brand" href="/"><span>U</span> urbaniz.</Link><p>Smarter parking, better cities.</p></div>
+        <div><b>Platform</b><Link href="http://localhost:3000">Find parking</Link><Link href="#hosts">Rent your space</Link><Link href="#business">Business</Link></div>
+        <div><b>Company</b><Link href="/media">Media resources</Link><Link href="/shop">Shop</Link><Link href="/contact">Contact</Link></div>
+        <div><b>Legal</b><Link href="/policies">Policies</Link><Link href="/policies#terms">Terms</Link><Link href="/policies#privacy">Privacy</Link></div>
       </footer>
-    </div>
+    </main>
   );
 }
